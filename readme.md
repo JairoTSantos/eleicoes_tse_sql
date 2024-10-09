@@ -8,6 +8,8 @@ Esse Script baixa e gera grande volume de dados.
 
 ```
 .
+├── /data
+├── /sql
 ├── download.py
 ├── conversor.py
 └── README.md
