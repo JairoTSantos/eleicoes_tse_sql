@@ -75,9 +75,9 @@ python conversor.py -ano 2022 -estado SP -tipo candidato
 python conversor.py -ano 2020 -estado RJ -tipo detalhe
 ```
 
-### 3. `inserir_sql.py`
+### 3. `inserir.py`
 
-O script `inserir_sql.py` é usado para inserir os comandos SQL gerados no banco de dados MySQL. Ele aceita os seguintes argumentos:
+O script `inserir.py` é usado para inserir os comandos SQL gerados no banco de dados MySQL. Ele aceita os seguintes argumentos:
 
 - `-pasta`: O caminho da pasta com arquivos SQL.
 - `-host`: O host do banco de dados MySQL.
