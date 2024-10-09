@@ -23,8 +23,13 @@ def gerar_comando_criacao_tabela(nome_tabela, tipos_dados):
 def gerar_comandos_insercao(nome_tabela, chunk):
     comandos_insercao = []
     for index, row in chunk.iterrows():
-        valores = ', '.join([f"'{str(v).replace('\'', '\'\'')}'" if isinstance(v, str) else str(v) for v in row])
-        comandos_insercao.append(f"INSERT INTO {nome_tabela} VALUES ({valores});\n")
+        valores = []
+        for v in row:
+            if isinstance(v, str) and v == "":  # Verifica se o valor é uma string vazia
+                valores.append('NULL')  # Substitui por NULL
+            else:
+                valores.append(f"'{str(v).replace('\'', '\'\'')}'" if pd.notnull(v) else 'NULL')
+        comandos_insercao.append(f"INSERT INTO {nome_tabela} VALUES ({', '.join(valores)});\n")
     return comandos_insercao
 
 # Função para processar grandes arquivos CSV em chunks
@@ -61,33 +66,47 @@ def processar_csv_grande(arquivo_csv, nome_tabela, sep=';', enc='latin1', dec=',
 
 def main():
     # Configurando o parser de argumentos
-    parser = argparse.ArgumentParser(description='Processar um arquivo CSV e gerar um arquivo SQL.')
-    parser.add_argument('-ano', type=int, required=True, help='Ano para o arquivo CSV')
+    parser = argparse.ArgumentParser(description='Processar arquivos CSV e gerar arquivos SQL.')
+    parser.add_argument('-ano', type=int, required=True, help='Ano inicial para o arquivo CSV')
     parser.add_argument('-estado', type=str, required=True, help='Estado para o arquivo CSV')
     parser.add_argument('-tipo', choices=['candidato', 'detalhe'], required=True, help='Tipo de dados a serem processados: "candidato" ou "detalhe".')
+    parser.add_argument('-ano_final', type=int, help='Ano final para processamento em intervalos de 2 anos (opcional).')
 
     args = parser.parse_args()
 
     # Parâmetros
     estado = args.estado
-    ano = args.ano
+    ano_inicial = args.ano
+    ano_final = args.ano_final
     tipo = args.tipo
-    
-    # Define o caminho do arquivo CSV com base no tipo
-    if tipo == 'candidato':
-        arquivo_csv = f'./data/{ano}/candidato/votacao_candidato_munzona_{ano}_{estado}.csv'
-        nome_tabela = f'votacao_candidato_munzona_{ano}_{estado}'
-    elif tipo == 'detalhe':
-        arquivo_csv = f'./data/{ano}/detalhe/detalhe_votacao_secao_{ano}_{estado}.csv'
-        nome_tabela = f'votacao_secao_{ano}_{estado}'
 
-    # Verifica se o arquivo CSV existe
-    if not os.path.isfile(arquivo_csv):
-        print(f"Erro: O arquivo {arquivo_csv} não foi encontrado.")
-        return
+    # Verifica se ano_final foi fornecido
+    if ano_final is None:
+        # Apenas processa o ano específico
+        anos_para_processar = [ano_inicial]
+    else:
+        # Verifica se o ano_final é maior que o ano_inicial
+        if ano_final < ano_inicial:
+            print("Erro: O ano final deve ser maior ou igual ao ano inicial.")
+            return
+        anos_para_processar = list(range(ano_inicial, ano_final + 1, 2))  # Pula de 2 em 2 anos
 
-    # Processar o CSV
-    processar_csv_grande(arquivo_csv, nome_tabela)
+    for ano in anos_para_processar:
+        # Define o caminho do arquivo CSV com base no tipo
+        if tipo == 'candidato':
+            arquivo_csv = f'./data/{ano}/candidato/votacao_candidato_munzona_{ano}_{estado}.csv'
+            nome_tabela = f'votacao_candidato_munzona_{ano}_{estado}'
+        elif tipo == 'detalhe':
+            arquivo_csv = f'./data/{ano}/detalhe/detalhe_votacao_secao_{ano}_{estado}.csv'
+            nome_tabela = f'votacao_secao_{ano}_{estado}'
+
+        # Verifica se o arquivo CSV existe
+        if not os.path.isfile(arquivo_csv):
+            print(f"Erro: O arquivo {arquivo_csv} não foi encontrado.")
+            continue  # Continua para o próximo ano
+
+        # Processar o CSV
+        processar_csv_grande(arquivo_csv, nome_tabela)
 
 if __name__ == '__main__':
     main()
