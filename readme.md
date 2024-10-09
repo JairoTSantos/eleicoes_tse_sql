@@ -1,8 +1,7 @@
+
 # Sistema de Download e Conversão de Dados de Votação
 
-Este repositório contém dois scripts em Python que permitem baixar e processar dados de votação do Tribunal Superior Eleitoral (TSE) do Brasil. O primeiro script (`download.py`) faz o download dos dados de votação para candidatos ou detalhes de seções eleitorais, enquanto o segundo script (`conversor.py`) converte os arquivos CSV baixados em comandos SQL para criação e inserção em um banco de dados.
-
-Esse Script baixa e gera grande volume de dados.
+Este repositório contém três scripts em Python que permitem baixar e processar dados de votação do Tribunal Superior Eleitoral (TSE) do Brasil. O primeiro script (`download.py`) faz o download dos dados de votação para candidatos ou detalhes de seções eleitorais, o segundo script (`conversor.py`) converte os arquivos CSV baixados em comandos SQL para criação e inserção em um banco de dados, e o terceiro script (`inserir_sql.py`) insere os comandos SQL gerados no banco de dados MySQL.
 
 ## Estrutura do Repositório
 
@@ -12,6 +11,7 @@ Esse Script baixa e gera grande volume de dados.
 ├── /sql
 ├── download.py
 ├── conversor.py
+├── inserir_sql.py
 └── README.md
 ```
 
@@ -21,11 +21,12 @@ Esse Script baixa e gera grande volume de dados.
 - Bibliotecas:
   - `requests`
   - `pandas`
+  - `mysql-connector-python`
 
 Você pode instalar as bibliotecas necessárias usando pip:
 
 ```bash
-pip install requests pandas
+pip install requests pandas mysql-connector-python
 ```
 
 ## Uso
@@ -72,6 +73,25 @@ python conversor.py -ano 2022 -estado SP -tipo candidato
 
 ```bash
 python conversor.py -ano 2020 -estado RJ -tipo detalhe
+```
+
+### 3. `inserir_sql.py`
+
+O script `inserir_sql.py` é usado para inserir os comandos SQL gerados no banco de dados MySQL. Ele aceita os seguintes argumentos:
+
+- `-pasta`: O caminho da pasta com arquivos SQL.
+- `-host`: O host do banco de dados MySQL.
+- `-user`: O usuário do banco de dados MySQL.
+- `-password`: A senha do banco de dados MySQL.
+- `-database`: O nome do banco de dados.
+- `-port`: A porta do banco de dados (padrão: `8889`).
+
+#### Exemplos
+
+- Para inserir os comandos SQL de arquivos na pasta `sql` no banco de dados:
+
+```bash
+python inserir_sql.py -pasta sql -host localhost -user seu_usuario -password sua_senha -database seu_banco -port 8889
 ```
 
 ## Contribuição
