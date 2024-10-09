@@ -2,6 +2,8 @@
 
 Este repositório contém dois scripts em Python que permitem baixar e processar dados de votação do Tribunal Superior Eleitoral (TSE) do Brasil. O primeiro script (`download.py`) faz o download dos dados de votação para candidatos ou detalhes de seções eleitorais, enquanto o segundo script (`conversor.py`) converte os arquivos CSV baixados em comandos SQL para criação e inserção em um banco de dados.
 
+Esse Script baixa e gera grande volume de dados.
+
 ## Estrutura do Repositório
 
 ```
