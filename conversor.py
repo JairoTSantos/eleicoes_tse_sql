@@ -109,7 +109,13 @@ def main():
     parser = argparse.ArgumentParser(description='Gerar scripts SQL a partir de arquivos CSV.')
     parser.add_argument('-estado', type=str, required=True, help='Estado dos dados a serem processados (ex: SP)')
     args = parser.parse_args()
-    
+
+    # Pergunta ao usuário se deseja continuar
+    resposta = input("Essa operação pode levar vários minutos. Você deseja continuar? (s/n): ").strip().lower()
+    if resposta != 's':
+        print("Operação cancelada.")
+        return  # Sai do programa se o usuário não desejar continuar
+
     for ano in pastas:           
         # Chama a função para gerar o script SQL
         gerar_script_sql(
