@@ -79,7 +79,7 @@ O script `inserir.py` é usado para inserir no banco os arquivos SQL gerados:
 - Para inserir os arquivos gerados rode:
 
 ```bash
-python inserir.py
+python inserir.py -apagar s
 ```
 
 ## Contribuição
