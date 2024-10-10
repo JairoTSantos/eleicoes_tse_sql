@@ -56,7 +56,7 @@ O script `conversor.py` é usado para processar os arquivos CSV baixados e gerar
 
 #### Exemplos
 
-- Para processar dados de votação de candidatos para o estado de São Paulo em 2022:
+- Para processar dados de votação de candidatos para o estado de São Paulo:
 
 ```bash
 python conversor.py -estado SP
