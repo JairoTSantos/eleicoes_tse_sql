@@ -58,6 +58,11 @@ def executar_sql_arquivo(caminho_arquivo):
         cursor.close()
         conexao.close()
 
+def remover_tabelas_existentes(cursor, nomes_tabelas):
+    """Remove tabelas do banco de dados que têm os nomes fornecidos."""
+    for nome_tabela in nomes_tabelas:
+        verificar_e_remover_tabela(cursor, nome_tabela)
+
 def importar_sql_da_pasta(pasta):
     """Importa todos os arquivos SQL de uma pasta."""
     arquivos_sql = [f for f in os.listdir(pasta) if f.endswith('.sql')]
@@ -75,6 +80,19 @@ def importar_sql_da_pasta(pasta):
         print("Operação cancelada.")
         return
 
+    # Conectando ao banco de dados para remover tabelas existentes
+    conexao = mysql.connector.connect(**config)
+    cursor = conexao.cursor()
+    
+    # Remove tabelas que correspondem aos arquivos
+    nomes_tabelas = [f[:-4] for f in arquivos_sql]  # Remove a extensão .sql
+    remover_tabelas_existentes(cursor, nomes_tabelas)
+    
+    # Fecha a conexão
+    cursor.close()
+    conexao.close()
+
+    # Insere os novos arquivos
     for i, arquivo in enumerate(arquivos_sql, start=1):
         caminho_completo = os.path.join(pasta, arquivo)
         print(f"Iniciando a inserção do arquivo {i} de {total_arquivos}: '{caminho_completo}'")
