@@ -1,4 +1,5 @@
 data/*
 sql/*
+my_env/*
 .DS_Store
 .DS_STORE
