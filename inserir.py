@@ -5,9 +5,19 @@ import mysql.connector
 config = {
     'user': 'jairo',
     'password': 'intell01',
-    'host': 'localhost',  # ou o IP do seu servidor MySQL
+    'host': 'localhost',
     'database': 'api',
 }
+
+def verificar_e_remover_tabela(cursor, nome_tabela):
+    """Verifica se a tabela existe e a remove, se existir."""
+    cursor.execute(f"SHOW TABLES LIKE '{nome_tabela}';")
+    resultado = cursor.fetchone()
+    
+    if resultado:
+        print(f"Tabela '{nome_tabela}' encontrada. Removendo...")
+        cursor.execute(f"DROP TABLE {nome_tabela};")
+        print(f"Tabela '{nome_tabela}' removida com sucesso.")
 
 def executar_sql_arquivo(caminho_arquivo):
     """Executa um arquivo SQL no banco de dados."""
@@ -19,9 +29,21 @@ def executar_sql_arquivo(caminho_arquivo):
         conexao = mysql.connector.connect(**config)
         cursor = conexao.cursor()
 
-        # Executando os comandos SQL
-        for comando in sql.split(';'):  # Divide os comandos pelo ponto e vírgula
-            if comando.strip():  # Ignora comandos vazios
+        # Dividindo o SQL em comandos
+        comandos = sql.split(';')
+
+        for comando in comandos:
+            comando = comando.strip()
+            if comando:  # Ignora comandos vazios
+                # Verifica se o comando é um CREATE TABLE e obtém o nome da tabela
+                if comando.startswith("CREATE TABLE"):
+                    # Extrai o nome da tabela da consulta
+                    nome_tabela = comando.split()[2]  # Ajuste se necessário
+
+                    # Verifica e remove a tabela se existir
+                    verificar_e_remover_tabela(cursor, nome_tabela)
+
+                # Executa o comando
                 cursor.execute(comando)
 
         # Comita as mudanças
@@ -46,6 +68,12 @@ def importar_sql_da_pasta(pasta):
         return
 
     print(f"Encontrados {total_arquivos} arquivos SQL na pasta '{pasta}'.")
+
+    # Pergunta de confirmação
+    resposta = input("Essa operação pode levar vários minutos. Você deseja continuar? (s/n): ").strip().lower()
+    if resposta != 's':
+        print("Operação cancelada.")
+        return
 
     for i, arquivo in enumerate(arquivos_sql, start=1):
         caminho_completo = os.path.join(pasta, arquivo)
