@@ -120,15 +120,15 @@ def main():
         # Chama a função para gerar o script SQL
         gerar_script_sql(
             os.path.join('data', ano, 'candidato', f'votacao_candidato_munzona_{ano}_{args.estado}.csv'),
-            os.path.join('sql', ano, 'candidato', f'votacao_candidato_munzona_{ano}_{args.estado}.sql')
+            os.path.join('sql', f'votacao_candidato_munzona_{ano}_{args.estado}.sql')
         )
         gerar_script_sql(
             os.path.join('data', ano, 'secao', f'detalhe_votacao_secao_{ano}_{args.estado}.csv'),
-            os.path.join('sql', ano, 'secao', f'detalhe_votacao_secao_{ano}_{args.estado}.sql')
+            os.path.join('sql', f'detalhe_votacao_secao_{ano}_{args.estado}.sql')
         )
         gerar_script_sql(
             os.path.join('data', ano, 'zona', f'detalhe_votacao_munzona_{ano}_{args.estado}.csv'),
-            os.path.join('sql', ano, 'zona', f'detalhe_votacao_munzona_{ano}_{args.estado}.sql')
+            os.path.join('sql', f'detalhe_votacao_munzona_{ano}_{args.estado}.sql')
         )
 
 if __name__ == "__main__":

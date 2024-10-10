@@ -4,8 +4,6 @@ import zipfile
 import argparse
 import shutil
 
-
-
 def baixar_arquivo_zip(ano, tipo):
     if tipo == "candidato":
         url = f"https://cdn.tse.jus.br/estatistica/sead/odsele/votacao_candidato_munzona/votacao_candidato_munzona_{ano}.zip"
