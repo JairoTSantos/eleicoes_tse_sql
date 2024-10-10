@@ -2,6 +2,8 @@ import os
 import requests
 import zipfile
 import argparse
+import shutil
+
 
 
 def baixar_arquivo_zip(ano, tipo):
@@ -31,7 +33,10 @@ def baixar_arquivo_zip(ano, tipo):
         pasta_destino = f"data/{ano}/{tipo}"
         caminho_zip = os.path.join(pasta_destino, f"{tipo}_votacao_{ano}.zip")
 
-        # Criar a pasta de destino após a resposta ser verificada
+        # Apaga a pasta primeiro depois criar a pasta de destino após a resposta ser verificada
+        if os.path.exists(pasta_destino):
+            if os.path.isdir(pasta_destino):
+                shutil.rmtree(pasta_destino)
         os.makedirs(pasta_destino, exist_ok=True)
 
         # Salvando o arquivo zip
