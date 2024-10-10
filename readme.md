@@ -36,7 +36,7 @@ O script `download.py` é usado para baixar os dados de votação. Ele aceita os
 
 - `-ano`: O ano dos dados a serem baixados (ex: 2022).
 - `-ano_final`: O ano final para download em intervalos de 2 anos.
--  `tipo`: (opcional) O tipo de dados a serem baixados (candidato, secao ou zona).
+- `-tipo`: (opcional) O tipo de dados a serem baixados (candidato, secao ou zona).
 
 #### Exemplos
 
