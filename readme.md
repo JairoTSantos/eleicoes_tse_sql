@@ -53,18 +53,31 @@ O script `conversor.py` é usado para processar os arquivos CSV baixados e gerar
 - `-estado`: O estado para o arquivo CSV (ex: SP).
 - `-ano`: O ano para o arquivo CSV.
 
+
 #### Exemplos
 
 - Para processar dados de votação de candidatos para o estado de São Paulo em 2022:
 
 ```bash
-python conversor.py -ano 2022 -estado SP
+python conversor.py -estado SP
 ```
 
 - Para processar dados de detalhes de votação para o estado do Rio de Janeiro em 2020:
 
 ```bash
-python conversor.py -ano 2020 -estado RJ
+python conversor.py 2020 -estado RJ
+```
+
+### 3. `inserir.py`
+
+O script `inserir.py` é usado para inserir no banco os arquivos SQL gerados:
+
+#### Exemplos
+
+- Para inserir os arquivos gerados rode:
+
+```bash
+python inserir.py
 ```
 
 ## Contribuição
