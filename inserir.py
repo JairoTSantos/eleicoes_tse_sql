@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+import argparse
 
 # Configurações do banco de dados
 config = {
@@ -63,8 +64,9 @@ def remover_tabelas_existentes(cursor, nomes_tabelas):
     for nome_tabela in nomes_tabelas:
         verificar_e_remover_tabela(cursor, nome_tabela)
 
-def importar_sql_da_pasta(pasta):
-    """Importa todos os arquivos SQL de uma pasta."""
+def importar_sql_da_pasta(apagar_arquivos):
+    """Importa todos os arquivos SQL da pasta fixa 'sql'."""
+    pasta = 'sql'  # Pasta fixa
     arquivos_sql = [f for f in os.listdir(pasta) if f.endswith('.sql')]
     total_arquivos = len(arquivos_sql)
 
@@ -98,6 +100,22 @@ def importar_sql_da_pasta(pasta):
         print(f"Iniciando a inserção do arquivo {i} de {total_arquivos}: '{caminho_completo}'")
         executar_sql_arquivo(caminho_completo)
 
+        # Remove o arquivo após a inserção, se o argumento '-apagar' for 's'
+        if apagar_arquivos:
+            try:
+                os.remove(caminho_completo)
+                print(f"Arquivo '{caminho_completo}' removido com sucesso.")
+            except OSError as e:
+                print(f"Erro ao remover o arquivo '{caminho_completo}': {e}")
+
 if __name__ == "__main__":
-    pasta_sql = 'sql'  # Substitua pelo caminho da sua pasta
-    importar_sql_da_pasta(pasta_sql)
+    parser = argparse.ArgumentParser(description='Importa arquivos SQL para o banco de dados.')
+    parser.add_argument('-apagar', type=str, choices=['s', 'n'], default='n', 
+                        help='Apagar arquivos após a inserção (s/n, padrão: n)')
+    
+    args = parser.parse_args()
+
+    # Converte a escolha de apagar para booleano
+    apagar_arquivos = args.apagar == 's'
+    
+    importar_sql_da_pasta(apagar_arquivos)

@@ -72,6 +72,8 @@ python conversor.py 2020 -estado RJ
 
 O script `inserir.py` é usado para inserir no banco os arquivos SQL gerados:
 
+- `-apagar`: Apagar os arquivos sql após a inserção (s ou n)
+
 #### Exemplos
 
 - Para inserir os arquivos gerados rode:
