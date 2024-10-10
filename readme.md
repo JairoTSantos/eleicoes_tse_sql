@@ -35,21 +35,15 @@ pip install requests pandas mysql-connector-python
 O script `download.py` é usado para baixar os dados de votação. Ele aceita os seguintes argumentos:
 
 - `-ano`: O ano dos dados a serem baixados (ex: 2022).
-- `-tipo`: O tipo de dados a serem baixados (`candidato`, `secao` ou `zona`).
-- `-ano_final`: (opcional) O ano final para download em intervalos de 2 anos.
+- `-ano_final`: O ano final para download em intervalos de 2 anos.
+-  `tipo`: (opcional) O tipo de dados a serem baixados (candidato, secao ou zona).
 
 #### Exemplos
 
-- Para baixar dados de candidatos para o ano de 2022:
+- Para baixar dados os anos de 2022 ate 2024:
 
 ```bash
-python download.py -ano 2022 -tipo candidato
-```
-
-- Para baixar dados de detalhes para o ano de 2020 a 2024 (de 2 em 2 anos):
-
-```bash
-python download.py -ano 2020 -ano_final 2024 -tipo secao
+python download.py -ano 2022 -ano_final 2024
 ```
 
 ### 2. `conversor.py`
