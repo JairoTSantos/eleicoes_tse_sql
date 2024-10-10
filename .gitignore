@@ -3,3 +3,4 @@ sql/*
 my_env/*
 .DS_Store
 .DS_STORE
+__pycache__
